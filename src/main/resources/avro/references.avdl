@@ -6,7 +6,7 @@ Defines types used by the GA4GH References API.
 References API servers may implement either or both of two modes: "classic", in
 which all `Reference`s annotate simple linear strings, and "graph", in which
 `Reference`s annotate `Sequence`s in sequence graphs. The "graph" mode is to be
-preferred in new client and server implementations.
+prefered in new client and server implementations.
 */
 protocol References {
 
@@ -23,19 +23,23 @@ new `Reference`s, the existing `References` should not be changed. Newly added
 existing `Reference` `Sequence`s should not be made to be children of newly
 added `Reference` `Sequence`s.
 
+An API server that supports the "graph" mode must always set the `segment`
+field. An API server that supports the "classic" mode must always set the `id`
+field. New client and server implementations should prefer the "graph" mode.
+
 */
 record Reference {
 
   /**
-  The reference ID. Unique within the repository.
-  */
-  string id;
+  The `Segment` describing this `Reference`'s `Sequence` in the `ReferenceSet`'s
+  sequence graph.
 
-  /**
-  The ID of the `Sequence` on which this `Reference` occurs. May not be null,
-  although it may happen to be the same as the ID of the `Reference`.
+  The `Segment` will generally cover the entirety of the `Sequence`, but may be
+  shorter if only a subrange of a `Sequence` is to be included in the
+  `ReferenceSet`.
 
-  The actual `Sequence` bases for a `Reference` are available through the
+  The `Sequence` ID of the `Segment` is equal to ID of the `Reference`. The
+  actual `Sequence` bases for a `Reference` are available through the
   `getSequenceBases()` API call on this `Reference`'s `Sequence`.
 
   Multiple `Reference`s on the same `Sequence` may not overlap.
@@ -43,18 +47,23 @@ record Reference {
   string sequenceId;
 
   /**
-  The 0-based inclusive offset from the left end of the `Sequence` at which the
-  `Reference` begins. This will be 0 unless the `Sequence` contains bases at the
-  left not included in the `Reference`.
+  The reference ID. Unique within the repository. A `Sequence` with this ID
+  exists, containing the reference's bases. If null, `segment` must be set, and
+  the `Sequence` ID field from `segment` is used.
+
+  If the API server supports the "classic" mode, this field must not be null.
   */
   long start;
 
   /**
-  The number of bases in this `Reference`. This will be the length of the
-  `Reference`'s `Sequence` unless the `Sequence` has some bases at one or both
-  ends not included in the `Reference`.
+  The number of bases in this `Reference`.
+
+  Ought to agree with `segment.length`, and at least one of the two fields must
+  exist on any `Reference`.
+
+  If the API server supports the "classic" mode, this field must not be null.
   */
-  long length;
+  union { null, long } length = null;
 
   /**
   The MD5 checksum uniquely representing this `Reference` as a lower-case

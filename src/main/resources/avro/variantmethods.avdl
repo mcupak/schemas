@@ -94,10 +94,10 @@ JSON.
 */
 record SearchVariantSetSequencesResponse {
   /**
-  The list of `Segment`s for matching sequences from the novel sequence graph
+  The list of `Sequence`s for matching sequences from the novel sequence graph
   for the `VariantSet`.
   */
-  array<org.ga4gh.models.Segment> segments = [];
+  array<org.ga4gh.models.Sequence> sequences = [];
 
   /**
   The continuation token, which is used to page through large result sets.
@@ -108,14 +108,22 @@ record SearchVariantSetSequencesResponse {
 }
 
 /**
-Gets a `VariantSet` by ID.
-`GET /variantsets/{id}` will return a JSON version of `VariantSet`.
+Gets novel `Sequence`s in the `VariantSet` that match the search criteria.
+
+`POST /variantsets/{id}/sequences/search` must accept a JSON version of
+`SearchVariantSetSequencesRequest` as the post body and will return a JSON
+version of `SearchVariantSetSequencesResponse`.
 */
-org.ga4gh.models.VariantSet getVariantSet(
+SearchVariantSetSequencesResponse searchVariantSetSequences(
   /**
-  The ID of the `VariantSet`.
+  The ID of the `VariantSet` which provides the novel sequences.
   */
-  string id) throws GAException;
+  string variantSetId,
+  /**
+  This request maps to the body of `POST variantsets/{id}/sequences/search` as
+  JSON.
+  */
+  SearchVariantSetSequencesRequest request) throws GAException;
 
 /******************  /variants/search  *********************/
 /** This request maps to the body of `POST /variants/search` as JSON. */
