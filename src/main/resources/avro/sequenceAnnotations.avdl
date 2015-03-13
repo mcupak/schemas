@@ -59,16 +59,16 @@ protocol SequenceAnnotations {
   }
   
   /**
-  Continuous numerical annotation along a region.
+  Continuous numerical annotation along a path.
   */
   record Wiggle {
     /**
-    The region being described
+    The path for the region being annotated.
     Note that we are fusing parts of UCSC BedGraph and Wiggle syntax.
     The region is being fully annotated, but can be divided into bins.
     If you have gaps, you need to define a sequence of such Wiggles.
     */
-    Region region;
+    Path path;
 
     /**
     The values associated to this region.
@@ -97,7 +97,8 @@ protocol SequenceAnnotations {
   }
 
   /**
-  Node in the annotation graph that annotates a contiguous region of 
+  Node in the annotation graph that annotates a contiguous region of a
+  sequence.
   */
   record Feature {
     /**
@@ -118,7 +119,7 @@ protocol SequenceAnnotations {
     /**
     Genomic location.
     */
-    Region region;
+    Path path;
 
     /**
     Feature that is annotated by this region.  Normally, this will be a term in
