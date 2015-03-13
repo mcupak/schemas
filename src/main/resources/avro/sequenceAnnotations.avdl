@@ -19,6 +19,30 @@ core generic record which corresponds to the a GFF3 record.
 protocol SequenceAnnotations {
 
   import idl "common.avdl";
+  import idl "ontologies.avdl";
+
+  /**
+  Identifier from a public database
+  */
+  record ExternalIdentifier {
+    /**
+    The source of the identifier.
+    (e.g. `Ensembl`)
+    */
+    string database;
+
+    /**
+    The ID defined by the external database.
+    (e.g. `ENST00000000000`)
+    */
+    string identifier;
+
+    /**
+    The version of the object or the database
+    (e.g. `78`)
+    */
+    string version;
+  }
 
   /**
   Type defining a collection of attributes associated with various protocol

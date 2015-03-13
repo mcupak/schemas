@@ -7,6 +7,7 @@ This protocol defines metadata used in the other GA4GH protocols.
 protocol Metadata {
 
 import idl "common.avdl";
+import idl "ontologies.avdl";
 
 /**
 An individual (or subject) typically corresponds to an individual
