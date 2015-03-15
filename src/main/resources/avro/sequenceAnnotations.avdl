@@ -47,15 +47,12 @@ protocol SequenceAnnotations {
   /**
   Type defining a collection of attributes associated with various protocol
   records.  Each attribute is a name that maps to an array of one or more
-  values.  To work around Avro restrictions, three fields are define, one for
-  each type of value.  However attribute names must be unique across all three
-  fields.  If possible, multi-part string values should be split into array
-  elements instead of adding separator syntax that need to parsed.
+  values.  Values can be strings, external identifiers, or ontology terms.
+  Values should be split into the array elements instead of using a separator
+  syntax that needs to parsed.
   */
   record Attributes {
-    map<array<string>> strAttrs = {};
-    map<array<ExternalIdentifier>> extIdAttrs = {};
-    map<array<OntologyTerm>> ontTermAttrs = {};
+    map<array<union {string, ExternalIdentifier, OntologyTerm}>> vals = {};
   }
   
   /**
